@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include <Shading.h>
+#include "Shading.h"
 #define MOTOR_DIR_CW    0
 #define MOTOR_DIR_CCW   1
 
@@ -10,29 +10,34 @@
 #define Pull    7
 #define Dir     6
 #define EN      5
+#define Sensor 3
+
+uint8_t direction = MOTOR_DIR_CW;
 
 void setup() {
   Serial.begin(9600);
-    pinMode(LimitA, INPUT_PULLUP);
-    shading_motor_init(Pull, Dir, EN);
+  pinMode(LimitA, INPUT_PULLUP);
+  pinMode(Sensor, INPUT);
+  shading_motor_init(Pull, Dir, EN);
 }
 
 void loop() {
-  if (!digitalRead(LimitA)) {
-    shading_motor_set(MOTOR_DIR_CW, MOTOR_DISABLE, EN, Dir);
-    while(!digitalRead(LimitA));
+  while (1) {
+    shading_motor_set(MOTOR_DIR_CW, Dir, MOTOR_ENABLE, EN);
+    if (!digitalRead(LimitA)) {
+      while(!digitalRead(LimitA));
+      break;
+    }
+    shading_motor_step(1, Pull);
   }
-  shading_motor_set(MOTOR_DIR_CW, Dir, MOTOR_ENABLE, EN);
-    for (uint8_t x=0;x<250;x++)
-        shading_motor_step(Pull, 1);
-
-  delay(500);
-  if (!digitalRead(LimitA)) {
-    shading_motor_set(MOTOR_DIR_CW, Dir, MOTOR_DISABLE, EN);
-    while(!digitalRead(LimitA));
+  
+  while (1) {
+    shading_motor_set(MOTOR_DIR_CCW, Dir, MOTOR_ENABLE, EN);
+    if (!digitalRead(LimitA)) {
+      while(!digitalRead(LimitA));
+      break;
+    }
+    
+    shading_motor_step(1, Pull);
   }
-  shading_motor_set(MOTOR_DIR_CCW, Dir, MOTOR_DISABLE, EN);
-    for (uint8_t x=0;x<250;x++)
-        shading_motor_step(Pull, 1);
-  delay(500);
 }
