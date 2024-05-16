@@ -30,7 +30,7 @@ void loop() {
   while (!digitalRead(LimitB)){
     delay(30);
   }
-  if (nilai == 10){
+  if (nilai == 99){
     nilai = 0;
   }
   if (nilai % 2 == 0){
