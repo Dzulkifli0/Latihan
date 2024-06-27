@@ -1,55 +1,28 @@
-//tes LDR
-// Deklarasi pin untuk LDR dan output
+//test LDR
+// Deklarasi pin untuk LDR
 const int ldrPins[] = {A0, A1, A2, A3, A4};
 const int numLDRs = 5;
-
-// Threshold untuk mendeteksi cahaya (disesuaikan dengan kondisi sebenarnya)
-const int threshold = 500;
 
 void setup() {
   // Memulai komunikasi serial pada baud rate 9600
   Serial.begin(9600);
-  
-  // Menetapkan A4 sebagai output
-  pinMode(ldrPins[4], OUTPUT);
 }
 
 void loop() {
-  // Array untuk menyimpan status logika dari setiap LDR
-  int ldrStatus[numLDRs] = {0};
-
-  // Membaca nilai dari setiap LDR dan menentukan status (0 atau 1)
-  for (int i = 0; i < numLDRs - 1; i++) {
+  for (int i = 0; i < numLDRs; i++) {
+    // Membaca nilai dari LDR
     int ldrValue = analogRead(ldrPins[i]);
-    ldrStatus[i] = (ldrValue > threshold) ? 1 : 0;
     
-    // Menampilkan nilai LDR dan status logika ke Serial Monitor
+    // Menampilkan nilai LDR ke Serial Monitor
     Serial.print("Nilai LDR pada pin A");
     Serial.print(i);
     Serial.print(": ");
-    Serial.print(ldrValue);
-    Serial.print(" -> Status: ");
-    Serial.println(ldrStatus[i]);
+    Serial.println(ldrValue);
   }
-
-  // Melakukan operasi OR antara A0 dan A3
-  int orResult1 = ldrStatus[0] | ldrStatus[3];
-
-  // Melakukan operasi OR antara A1 dan A2
-  int orResult2 = ldrStatus[1] | ldrStatus[2];
-
-  // Menampilkan hasil operasi OR ke Serial Monitor
-  Serial.print("Hasil OR antara A0 dan A3: ");
-  Serial.println(orResult1);
-  Serial.print("Hasil OR antara A1 dan A2: ");
-  Serial.println(orResult2);
-
-  // Menetapkan nilai output ke pin A4 berdasarkan hasil operasi OR
-  digitalWrite(ldrPins[4], orResult1 | orResult2);
 
   // Menambahkan garis pemisah di Serial Monitor untuk setiap siklus pembacaan
   Serial.println("-----------------------------");
 
-  // Delay 1000ms untuk memperlambat pembacaan
+  // Delay 500ms untuk memperlambat pembacaan
   delay(1000);
 }
