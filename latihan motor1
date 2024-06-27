@@ -1,3 +1,4 @@
+// akan berhenti saat limit A ditekan, dan akan berjalan lagi saat ditekan kembali
 #include <Arduino.h>
 #include "Shading.h"
 #define MOTOR_DIR_CW    0
