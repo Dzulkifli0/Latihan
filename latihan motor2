@@ -1,4 +1,4 @@
-//akan berputar arah disaat limitB ditekan
+//akan berhenti saat limitB ditekan, dan akan berjalan kembali disaat ditekan lagi
 #include <Arduino.h>
 #include "Shading.h"
 #define MOTOR_DIR_CW    0
